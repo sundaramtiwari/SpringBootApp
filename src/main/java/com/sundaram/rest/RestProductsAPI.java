@@ -92,8 +92,8 @@ public class RestProductsAPI {
 			String currencyCode = productJson.get("currencyCode") == null ? null : (String) productJson.get("currencyCode");
 
 			Product product = productService.findProductById(id.intValue());
-			
-			if (product != null) {
+
+			if (product.getId() != null) {
 				return "Product already exists with Id: " + id;
 			}
 
@@ -128,7 +128,7 @@ public class RestProductsAPI {
 
 			Product product = productService.findProductById(id.intValue());
 			
-			if (product == null) {
+			if (product.getId() == null) {
 				return "Product does not exists with Id: " + id;
 			} else if (name == null && value == null && currencyCode == null) {
 				return "Nothing to update.";
