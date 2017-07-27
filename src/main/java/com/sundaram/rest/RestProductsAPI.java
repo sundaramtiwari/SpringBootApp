@@ -10,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sundaram.entity.Product;
 import com.sundaram.entity.Product.CurrencyCode;
 import com.sundaram.entity.Product.CurrentPrice;
@@ -35,13 +35,13 @@ public class RestProductsAPI {
 
 	private static final Logger LOGGER = Logger.getLogger(RestProductsAPI.class);
 
+	@Lazy
 	@Autowired
 	protected RestTemplate restTemplate;
 
 	@Autowired
 	protected ProductService productService;
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/products/{productId}", method = RequestMethod.GET, produces = "application/json")
 	public String getProductDetails( @PathVariable(value = "productId") Integer productId ) throws JsonProcessingException {
 
@@ -51,8 +51,6 @@ public class RestProductsAPI {
 			LOGGER.warn("ProductId missing, cannot fetch product details.");
 			return "Missing mandatory param: productId";
 		}
-
-		JSONObject obj = new JSONObject();
 
 		/**
 		 *  Retrieve the product name from an external API:
@@ -67,13 +65,8 @@ public class RestProductsAPI {
 
 		// Fetch product details from DB and Cache
 		Product product = productService.findProductById(productId);
-		
-		obj.put("id", product.getId());
-		obj.put("name", product.getName());
-		obj.put("current_price", product.getCurrentPrice());
 
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writeValueAsString(product);
+		return JsonUtil.writeValueAsString(product);
 	}
 
 	@RequestMapping(value="/products/{productId}", method = RequestMethod.POST, consumes = "application/json")

@@ -11,4 +11,5 @@ public interface RestPathConstants {
 
 	String API = "api";
 	String VERSION_1 = "/v1";
+	String SOCIAL = "/social";
 }

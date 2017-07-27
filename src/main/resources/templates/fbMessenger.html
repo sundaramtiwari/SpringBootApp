@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'hello')}">
+<body>
+<script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId: "1569828926647180",
+        xfbml: true,
+        version: "v2.6"
+      });
+
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) { return; }
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    (function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.9&appId=1569828926647180";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+    function confirmOptIn() {
+        FB.AppEvents.logEvent('MessengerCheckboxUserConfirmation', null, {
+          'app_id':1569828926647180,
+          'page_id':1743578095854322,
+          'ref':'test',
+          'user_ref':'[[${user_ref}]]'
+        });
+    }
+
+    window.onload = function() {
+        document.getElementsByClassName("fb-messenger-checkbox")[0].setAttribute("user_ref", '[[${user_ref}]]');
+    }
+</script>
+<div class="fb-messenger-checkbox"  
+	origin="http://localhost:5000/"
+    page_id=1743578095854322
+    messenger_app_id=1569828926647180
+    user_ref= [[${user_ref}]]
+    prechecked="true" 
+    allow_login="true" 
+    size="large">
+</div>
+<input type="button" onclick="confirmOptIn()" value="Confirm Opt-in"/>
+</body>
+</html>

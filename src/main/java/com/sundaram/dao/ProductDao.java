@@ -9,8 +9,6 @@ import java.sql.Statement;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.sundaram.cache.GenericCache;
-import com.sundaram.cache.GenericCacheImpl;
 import com.sundaram.entity.Product;
 
 /**
